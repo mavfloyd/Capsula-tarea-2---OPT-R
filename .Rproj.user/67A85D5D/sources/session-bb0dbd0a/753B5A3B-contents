@@ -1,0 +1,229 @@
+---
+title: "Tarea 2 - Análisis ELSOC"
+format: html
+editor: visual
+bibliography: ../input/bib/references.bib
+---
+
+# Cápsula: Tarea 2 - OPT
+
+### Paso 1: Preparar el área de trabajo
+
+```{r, echo=FALSE, warning=FALSE}
+
+if (Sys.info()["user"] == "erick") {
+  Sys.setenv(CHROMOTE_CHROME = "C:/Program Files/BraveSoftware/Brave-Browser/Application/brave.exe")
+}
+
+# Gestión de librerías y paquetes.
+if (!require("pacman")) install.packages("pacman")
+
+pacman::p_load(
+  tidyverse,    # Manipulación de datos y ggplot2
+  haven,        # Lectura de archivos .sav (SPSS)
+  sjmisc,       # Análisis descriptivo y frecuencias
+  knitr,        # Renderizado de tablas
+  kableExtra,   # Formateo avanzado y exportación de tablas
+  sjPlot,       # Visualización de datos sociológicos
+  here,         # Gestión de rutas relativas
+  webshot2,     # Motor para guardar tablas como imagen
+  janitor,      # Limpieza de nombres y tablas
+  summarytools  # Resúmenes de datos
+)
+rm(list = ls()) # Limpiar entorno de trabajo
+```
+
+### Paso 2: Cargar base de datos a utilizar
+
+```{r, echo=FALSE, warning=FALSE}
+elsoc <- read_sav("../input/data/ELSOC_Long_2016_2023.sav")
+```
+
+### Introducción
+
+Para efectos de esta tarea, se trabajará con la pregunta de investigación: ***"¿En qué medida el ingreso y el género influyen en la creencia de que el esfuerzo permite el éxito en Chile?"***. Esta interrogante se inserta en la discusión sobre la meritocracia, entendida como un sistema donde la distribución de bienes y beneficios se basa en el talento y el esfuerzo individual.\
+\
+En las sociedades modernas, este principio actúa como un mecanismo simbólico que legítima la desigualdad económica, desplazando los criterios de herencia por los de mérito personal. La literatura sugiere que la posición que ocupan los individuos en la estructura social afecta su visión del sistema; específicamente, como explica [@castillo2019] "(...) *aquellos de mayor estatus (asociado a ingreso y educación) percibirán y preferirán más la meritocracia como una forma de legitimar su posición en la sociedad*".
+
+Para este análisis, se utiliza la base de datos de la Encuesta Longitudinal Social de Chile (ELSOC), versión Long 2016-2023, buscando contrastar si estas percepciones subjetivas sobre el esfuerzo varían significativamente según las condiciones materiales y de género de los encuestados en el contexto nacional.
+
+Para revisar, las variables, recomiendo observar los cuestionarios de las encuestas. En este caso, las seleccionadas son las siguientes:
+
+-   m13: Sueldo líquido mensual - Variable intervalar.
+
+-   m0_edad: Edad - Variable intervalar.
+
+-   m0_sexo: Sexo - Variable nominal.
+
+-   m01: Nivel educacional - Variable ordinal.
+
+```{r Selección y preparación de las variables.}
+
+elsoc_proc <- elsoc %>% 
+  # 1. Seleccionamos las variables
+  select(m13, m0_edad, m01, m0_sexo) %>% 
+  set_na(na = c(-888, -999, 999999999)) %>% 
+  
+  # 3. Etiquetamos las variables categoricas
+  mutate(m0_sexo = as_factor(m0_sexo),
+         m01 = as_factor(m01)) %>% 
+  
+  # 4. Renombramos las variables
+  rename(Sueldo = m13, 
+         Edad = m0_edad, 
+         Educacion = m01, 
+         Sexo = m0_sexo) %>% 
+  
+  # 5. Quitamos las filas con datos perdidos
+  na.omit()
+
+```
+
+### Paso 3: Sacar resultados descriptivos.
+
+```{r, warning=FALSE, message=FALSE}
+
+# 1. Creamos la tabla
+tabla_descriptivos <- elsoc_proc %>%
+  select(Sueldo, Edad) %>%
+  pivot_longer(cols = everything(), names_to = "Variable", values_to = "Valor") %>%
+  group_by(Variable) %>%
+  summarise(
+    Minimo = min(Valor),
+    Media = mean(Valor),
+    Mediana = median(Valor),
+    Maximo = max(Valor),
+    SD = sd(Valor),
+  )
+
+# 2. Le damos formato con kable
+tabla_final_descriptivos <- tabla_descriptivos %>%
+  mutate(Variable = case_when(Variable == "Sueldo" ~ "Sueldo Líquido",
+                              Variable == "Edad" ~ "Edad")) %>% 
+  kable(caption = "Tabla 1. Estadísticos descriptivos de Sueldo y Edad",
+        digits = 0, 
+        format = "html",
+        col.names = c("Variable", "Mínimo", "Media", "Mediana", "Máximo", "D.E.")) %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"), 
+                full_width = F, 
+                position = "center") %>%
+  column_spec(1, bold = T)
+
+tabla_final_descriptivos
+
+tabla_final_descriptivos %>% 
+  save_kable(file = "../output/tables/tabla_descriptivos.png", zoom = 3)
+```
+
+La muestra analizada, por un lado presenta una edad promedio de 45 años, con una desviación estándar de 13 años. Es destacable que tanto la media como la mediana coinciden en los 45 años, lo que sugiere una distribución simétrica de la edad entre los encuestados, cuyo rango abarca desde los 18 hasta los 84 años.\
+\
+Ahora bien, el sueldo líquido exhibe una marcada asimetría y dispersión. Mientras que el ingreso promedio se sitúa en \$579.414, la mediana desciende a \$415.000, lo que indica que el 50% de la muestra percibe ingresos iguales o inferiores a esta última cifra. La alta variabilidad de los datos se refleja en una desviación estándar de \$637.065 y un rango que se extiende desde los \$0 hasta un máximo de \$20.000.000. Esta brecha entre la media y la mediana es un indicador típico de desigualdad salarial, donde unos pocos ingresos muy elevados elevan el promedio por sobre la realidad de la mayoría de los casos.
+
+```{r, warning=FALSE, message=FALSE}
+
+# 1. Tabla para Educación
+tabla_educ <- elsoc_proc %>%
+  count(Educacion) %>%
+  mutate(
+    freq_abs = n,                              # Frecuencia Absoluta
+    freq_acum = cumsum(n),                     # Frecuencia Acumulada
+    freq_rel = (n / sum(n)) * 100,             # Frecuencia Relativa (%)
+    freq_rel_acum = cumsum(freq_rel)           # Frecuencia Relativa Acumulada (%)
+  ) %>%
+  select(-n) # Quitamos la columna 'n' original porque ya la duplicamos
+
+# Formato Kable
+tabla_educ_final <- tabla_educ %>%
+  kable(caption = "Tabla 2. Distribución de Nivel Educacional",
+        digits = 1,
+        format = "html",
+        col.names = c("Categoría", "Frec. Absoluta", "Frec. Acumulada", "Frec. Relativa (%)", "Frec. Rel. Acum (%)")) %>%
+  kable_styling(bootstrap_options = c("striped", "hover"), full_width = F)
+
+tabla_educ_final %>% 
+  save_kable(file = "../output/tables/tabla_educacion.png", zoom = 3)
+```
+
+En cuanto a la escolaridad de la muestra (N=11.563), se observa una distribución donde la categoría predominante es la Educación Media completa, alcanzando un 31,6% de los casos (n=3.657). Al analizar la frecuencia relativa acumulada, resulta crítico notar que el 59,2% de los encuestados posee, como máximo, la escolaridad obligatoria terminada, lo que sitúa a la mayoría de la muestra fuera del sistema de educación superior.\
+\
+Por otro lado, respecto a los estudios superiores, llama la atención que existe una paridad entre quienes han completado la Educación Técnica Superior (14,9%) y la Educación Universitaria (14,1%). Además, los niveles de especialización son minoritarios, con solo un 2.4% de los participantes declarando estudios de posgrado.
+
+```{r, warning=FALSE, message=FALSE}
+# Tabla para Sexo
+tabla_sexo <- elsoc_proc %>%
+  count(Sexo) %>%
+  mutate(
+    freq_abs = n,
+    freq_acum = cumsum(n),
+    freq_rel = (n / sum(n)) * 100,
+    freq_rel_acum = cumsum(freq_rel)
+  ) %>%
+  select(-n)
+
+# Formato Kable
+tabla_sexo_final <- tabla_sexo  %>%
+  kable(caption = "Tabla 3. Distribución por Sexo",
+        digits = 1,
+        format = "html",
+        col.names = c("Categoría", "Frec. Absoluta", "Frec. Acumulada", "Frec. Relativa (%)", "Frec. Rel. Acum (%)")) %>%
+  kable_styling(bootstrap_options = c("striped", "hover"), full_width = F)
+
+tabla_sexo_final %>% 
+  save_kable(file = "../output/tables/tabla_sexo.png", zoom = 3)
+```
+
+\
+En términos de composición demográfica, la muestra acá presenta una distribución relativamente equilibrada, aunque con una mayoría femenina. Del total de participantes (N=11.563), el 52,5% se identifica como mujer (n=6.068), mientras que el 47,5% corresponde a hombres (n=5.495).
+
+### Paso 4: Ilustrar resultados con gráficos
+
+```{r, warning=FALSE, message=FALSE}
+grafico_sueldo <- ggplot(elsoc_proc, aes(x = Sueldo)) +
+  geom_histogram(fill = "#4FA2C4", color = "white", bins = 50) +
+  geom_vline(aes(xintercept = median(Sueldo)), color = "#FFAD33", linetype = "dashed", size = 1) +
+  
+  # Usamos una función personalizada dentro de labels
+  scale_x_continuous(
+    breaks = seq(0, 20000000, by = 1000000), # Cortes cada 1 millón
+    labels = function(x) {
+      ifelse(x == 0, "$0", paste0("$", x/1000000, "M"))
+    }
+  ) +
+  
+  labs(title = "Distribución del Sueldo Líquido Mensual",
+       subtitle = "La línea amarilla indica la mediana. Eje X en millones de pesos (M)",
+       x = "Sueldo", 
+       y = "Frecuencia",
+       caption = "Fuente: Elab. Propia a partir de ELSOC 2016-2023") +
+  
+  theme_minimal()
+
+ggsave(filename = "../output/graphs/grafico_sueldo.png", 
+       plot = grafico_sueldo, 
+       width = 10, 
+       height = 6, 
+       dpi = 300)
+```
+
+La distribución del sueldo líquido mensual en la muestra de ELSOC, muestra una marcada asimetría. Con una mediana situada en los \$415.000, el gráfico revela que la mitad de los encuestados percibe remuneraciones que no superan dicho umbral, agrupándose mayoritariamente entre los \$0 y el \$1.000.000. Esta altísima densidad en la base de la escala salarial hace que los ingresos más elevados, que llegan incluso hasta los \$20.000.000, se vuelvan visualmente casi imperceptibles gráficamente.
+
+```{r, warning=FALSE, message=FALSE}
+# Gráfico 2: Distribución de Nivel Educacional
+grafico_educ <- ggplot(elsoc_proc, aes(x = Educacion, fill = Educacion)) +
+  geom_bar() +
+  coord_flip() + # Giramos el gráfico para leer bien las etiquetas
+  labs(title = "Nivel Educacional de los Encuestados",
+       x = "Nivel de Estudios", 
+       y = "Cantidad de Casos",
+       caption = "Fuente: Elab. Propia a partir de ELSOC 2016-2023") +
+  scale_fill_viridis_d(option = "plasma", guide = "none") + # Colores bonitos y sin leyenda innecesaria
+  theme_classic()
+
+ggsave(filename = "../output/graphs/grafico_educ.png", 
+       plot = grafico_educ, 
+       width = 10, 
+       height = 6, 
+       dpi = 300)
+```
+
+El siguiente gráfico de barras revela que el nivel educacional predominante en la muestra es la Educación Media completa, la cual actúa como el principal eje de concentración con más de 3.500 casos, superando significativamente a cualquier otra categoría. Resulta sociológicamente relevante la paridad observada en los niveles de educación superior, donde los estudios Técnicos superiores y Universitarios completos presentan frecuencias casi idénticas, lo que sugiere una distribución equitativa entre ambos tipos de trayectorias profesionales en los encuestados. Por el otro lado, los extremos de la distribución (aquellos sin estudios o con formación de posgrado) representan las minorías más reducidas.

@@ -1,0 +1,45 @@
+{
+    "sources": [
+        {
+            "DOI": "10.3989/ris.2019.77.1.17.114",
+            "URL": "https://revintsociologia.revistas.csic.es/index.php/revintsociologia/article/view/1017",
+            "author": [
+                {
+                    "family": "Castillo",
+                    "given": "Juan C."
+                },
+                {
+                    "family": "Torres",
+                    "given": "Alex"
+                },
+                {
+                    "family": "Atria",
+                    "given": "Jorge"
+                },
+                {
+                    "family": "Maldonado",
+                    "given": "Luis"
+                }
+            ],
+            "container-title": "Revista Internacional de Sociología",
+            "id": "castillo2019",
+            "issue": "1",
+            "issued": {
+                "date-parts": [
+                    [
+                        2019,
+                        3,
+                        30
+                    ]
+                ]
+            },
+            "language": "es",
+            "page": "e117-e117",
+            "title": "Meritocracia y desigualdad económica: Percepciones, preferencias e implicancias",
+            "title-short": "Meritocracia y desigualdad económica",
+            "type": "article-journal",
+            "volume": "77"
+        }
+    ],
+    "project_biblios": []
+}

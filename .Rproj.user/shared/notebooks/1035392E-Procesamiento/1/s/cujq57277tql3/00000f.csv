@@ -1,0 +1,39 @@
+"0","install.packages(""pacman"")           # Esto en casos de que no lo tengan instalado."
+"2","WARNING: Rtools is required to build R packages but is not currently installed. Please download and install the appropriate version of Rtools before proceeding:
+
+https://cran.rstudio.com/bin/windows/Rtools/
+"
+"2","probando la URL 'https://cran.rstudio.com/bin/windows/contrib/4.5/pacman_0.5.1.zip'
+"
+"2","Content type 'application/zip'"
+"2"," length 394722 bytes (385 KB)
+"
+"2","downloaded 385 KB
+
+"
+"1","package ‘pacman’ successfully unpacked and MD5 sums checked
+"
+"1","
+"
+"1",""
+"1","The downloaded binary packages are in
+	C:\Users\erick\AppData\Local\Temp\RtmpSEXE0n\downloaded_packages"
+"1",""
+"1","
+"
+"0","pacman::p_load(tidyverse,            # Manipulacion datos"
+"0","               haven,                # Manipulacion datos"
+"0","               sjmisc,               # Descriptivos"
+"0","               knitr,                # Render y tablas"
+"0","               kableExtra,           # Formateo tablas"
+"0","               summarytools,         # Tablas"
+"0","               sjPlot,               # Tablas y gráficos"
+"0","               ggplot2,              # Gráficos"
+"0","               stargazer,            # Tablas"
+"0","               janitor,              # Tablas y formateo"
+"0","               crosstable,           # Tablas"
+"0","               table1                # Tablas"
+"0","               ) "
+"0",""
+"0","options(scipen = 999) # Desactivar notacion cientifica"
+"0","rm(list = ls()) # Limpiar entorno de trabajo"
