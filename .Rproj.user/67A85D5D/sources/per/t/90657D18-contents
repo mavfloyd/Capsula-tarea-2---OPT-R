@@ -31,12 +31,14 @@ pacman::p_load(
   summarytools  # Resúmenes de datos
 )
 rm(list = ls()) # Limpiar entorno de trabajo
+options(scipen = 999)
 ```
 
 ### Paso 2: Cargar base de datos a utilizar
 
 ```{r, echo=FALSE, warning=FALSE}
 elsoc <- read_sav("../input/data/ELSOC_Long_2016_2023.sav")
+
 ```
 
 ### Introducción
@@ -57,7 +59,7 @@ Para revisar, las variables, recomiendo observar los cuestionarios de las encues
 
 -   m01: Nivel educacional - Variable ordinal.
 
-```{r Selección y preparación de las variables.}
+```{r echo=FALSE, warning=FALSE}
 
 elsoc_proc <- elsoc %>% 
   # 1. Seleccionamos las variables
@@ -179,7 +181,7 @@ En términos de composición demográfica, la muestra acá presenta una distribu
 
 ```{r, warning=FALSE, message=FALSE}
 grafico_sueldo <- ggplot(elsoc_proc, aes(x = Sueldo)) +
-  geom_histogram(fill = "#4FA2C4", color = "white", bins = 50) +
+  geom_histogram(fill = "#294D8F", color = "white", bins = 50) +
   geom_vline(aes(xintercept = median(Sueldo)), color = "#FFAD33", linetype = "dashed", size = 1) +
   
   # Usamos una función personalizada dentro de labels

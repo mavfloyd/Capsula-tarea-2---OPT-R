@@ -123,19 +123,10 @@ div.csl-indent {
 </header>
 
 
-<section id="cápsula-tarea-2---opt" class="level1">
-<h1>Cápsula: Tarea 2 - OPT</h1>
-<section id="paso-1-preparar-el-área-de-trabajo" class="level3">
-<h3 class="anchored" data-anchor-id="paso-1-preparar-el-área-de-trabajo">Paso 1: Preparar el área de trabajo</h3>
-<div class="cell">
-<div class="cell-output cell-output-stderr">
-<pre><code>Cargando paquete requerido: pacman</code></pre>
-</div>
-</div>
-</section>
-<section id="paso-2-cargar-base-de-datos-a-utilizar" class="level3">
-<h3 class="anchored" data-anchor-id="paso-2-cargar-base-de-datos-a-utilizar">Paso 2: Cargar base de datos a utilizar</h3>
-</section>
+<section id="cápsula-trabajo-opt-r" class="level1">
+<h1>Cápsula: Trabajo OPT: R</h1>
+<section id="trabajo-1" class="level2">
+<h2 class="anchored" data-anchor-id="trabajo-1">Trabajo 1</h2>
 <section id="introducción" class="level3">
 <h3 class="anchored" data-anchor-id="introducción">Introducción</h3>
 <p>Para efectos de esta tarea, se trabajará con la pregunta de investigación: <strong><em>“¿En qué medida el ingreso y el género influyen en la creencia de que el esfuerzo permite el éxito en Chile?”</em></strong>. Esta interrogante se inserta en la discusión sobre la meritocracia, entendida como un sistema donde la distribución de bienes y beneficios se basa en el talento y el esfuerzo individual.<br>
@@ -149,56 +140,61 @@ En las sociedades modernas, este principio actúa como un mecanismo simbólico q
 <li><p>m0_sexo: Sexo - Variable nominal.</p></li>
 <li><p>m01: Nivel educacional - Variable ordinal.</p></li>
 </ul>
+</section>
+<section id="preparación-de-la-escala" class="level3">
+<h3 class="anchored" data-anchor-id="preparación-de-la-escala">Preparación de la escala</h3>
+<p>Para efectos de la tarea 3, se procederá a agregar variables para la escala que midan meritocracia, las cuales operarán como variables dependientes.</p>
+<ul>
+<li><p>c18_09: En Chile las personas son recompensadas por sus esfuerzos.</p></li>
+<li><p>c18_10: En Chile las personas son recompensadas por su inteligencia y habilidades.</p></li>
+<li><p>c18_13: En Chile las personas tienen igualdad de oportunidades para salir adelante.</p></li>
+</ul>
+</section>
+</section>
+<section id="trabajo-2" class="level2">
+<h2 class="anchored" data-anchor-id="trabajo-2">Trabajo 2:</h2>
+<p>A continuación, se operacionalizan las variables seleccionadas, sacarle los descriptivos y sus respectivas visualizaciones mediante tablas y gráficos.</p>
+<section id="paso-1-cargar-librerias." class="level3">
+<h3 class="anchored" data-anchor-id="paso-1-cargar-librerias.">Paso 1: Cargar librerias.</h3>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>elsoc_proc <span class="ot">&lt;-</span> elsoc <span class="sc">%&gt;%</span> </span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 1. Seleccionamos las variables</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(m13, m0_edad, m01, m0_sexo) <span class="sc">%&gt;%</span> </span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_na</span>(<span class="at">na =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">888</span>, <span class="sc">-</span><span class="dv">999</span>, <span class="dv">999999999</span>)) <span class="sc">%&gt;%</span> </span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 3. Etiquetamos las variables categoricas</span></span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">m0_sexo =</span> <span class="fu">as_factor</span>(m0_sexo),</span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>         <span class="at">m01 =</span> <span class="fu">as_factor</span>(m01)) <span class="sc">%&gt;%</span> </span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 4. Renombramos las variables</span></span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">Sueldo =</span> m13, </span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>         <span class="at">Edad =</span> m0_edad, </span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>         <span class="at">Educacion =</span> m01, </span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>         <span class="at">Sexo =</span> m0_sexo) <span class="sc">%&gt;%</span> </span>
-<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 5. Quitamos las filas con datos perdidos</span></span>
-<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">na.omit</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Cargando paquete requerido: pacman</code></pre>
 </div>
+</div>
+</section>
+<section id="paso-2-cargar-base-de-datos-a-utilizar-y-filtrarla" class="level3">
+<h3 class="anchored" data-anchor-id="paso-2-cargar-base-de-datos-a-utilizar-y-filtrarla">Paso 2: Cargar base de datos a utilizar y filtrarla</h3>
 </section>
 <section id="paso-3-sacar-resultados-descriptivos." class="level3">
 <h3 class="anchored" data-anchor-id="paso-3-sacar-resultados-descriptivos.">Paso 3: Sacar resultados descriptivos.</h3>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. Creamos la tabla</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>tabla_descriptivos <span class="ot">&lt;-</span> elsoc_proc <span class="sc">%&gt;%</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(Sueldo, Edad) <span class="sc">%&gt;%</span></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="at">cols =</span> <span class="fu">everything</span>(), <span class="at">names_to =</span> <span class="st">"Variable"</span>, <span class="at">values_to =</span> <span class="st">"Valor"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Variable) <span class="sc">%&gt;%</span></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">Minimo =</span> <span class="fu">min</span>(Valor),</span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">Media =</span> <span class="fu">mean</span>(Valor),</span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">Mediana =</span> <span class="fu">median</span>(Valor),</span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">Maximo =</span> <span class="fu">max</span>(Valor),</span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">SD =</span> <span class="fu">sd</span>(Valor),</span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. Le damos formato con kable</span></span>
-<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>tabla_final_descriptivos <span class="ot">&lt;-</span> tabla_descriptivos <span class="sc">%&gt;%</span></span>
-<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Variable =</span> <span class="fu">case_when</span>(Variable <span class="sc">==</span> <span class="st">"Sueldo"</span> <span class="sc">~</span> <span class="st">"Sueldo Líquido"</span>,</span>
-<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>                              Variable <span class="sc">==</span> <span class="st">"Edad"</span> <span class="sc">~</span> <span class="st">"Edad"</span>)) <span class="sc">%&gt;%</span> </span>
-<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>(<span class="at">caption =</span> <span class="st">"Tabla 1. Estadísticos descriptivos de Sueldo y Edad"</span>,</span>
-<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>        <span class="at">digits =</span> <span class="dv">0</span>, </span>
-<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>        <span class="at">format =</span> <span class="st">"html"</span>,</span>
-<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>        <span class="at">col.names =</span> <span class="fu">c</span>(<span class="st">"Variable"</span>, <span class="st">"Mínimo"</span>, <span class="st">"Media"</span>, <span class="st">"Mediana"</span>, <span class="st">"Máximo"</span>, <span class="st">"D.E."</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="at">bootstrap_options =</span> <span class="fu">c</span>(<span class="st">"striped"</span>, <span class="st">"hover"</span>, <span class="st">"condensed"</span>), </span>
-<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>                <span class="at">full_width =</span> F, </span>
-<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>                <span class="at">position =</span> <span class="st">"center"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">column_spec</span>(<span class="dv">1</span>, <span class="at">bold =</span> T)</span>
-<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>tabla_final_descriptivos</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. Creamos la tabla</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>tabla_descriptivos <span class="ot">&lt;-</span> elsoc_proc <span class="sc">%&gt;%</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(Sueldo, Edad) <span class="sc">%&gt;%</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="at">cols =</span> <span class="fu">everything</span>(), <span class="at">names_to =</span> <span class="st">"Variable"</span>, <span class="at">values_to =</span> <span class="st">"Valor"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Variable) <span class="sc">%&gt;%</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">Minimo =</span> <span class="fu">min</span>(Valor),</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">Media =</span> <span class="fu">mean</span>(Valor),</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">Mediana =</span> <span class="fu">median</span>(Valor),</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">Maximo =</span> <span class="fu">max</span>(Valor),</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">SD =</span> <span class="fu">sd</span>(Valor),</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. Le damos formato con kable</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>tabla_final_descriptivos <span class="ot">&lt;-</span> tabla_descriptivos <span class="sc">%&gt;%</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Variable =</span> <span class="fu">case_when</span>(Variable <span class="sc">==</span> <span class="st">"Sueldo"</span> <span class="sc">~</span> <span class="st">"Sueldo Líquido"</span>,</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>                              Variable <span class="sc">==</span> <span class="st">"Edad"</span> <span class="sc">~</span> <span class="st">"Edad"</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>(<span class="at">caption =</span> <span class="st">"Tabla 1. Estadísticos descriptivos de Sueldo y Edad"</span>,</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>        <span class="at">digits =</span> <span class="dv">0</span>, </span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>        <span class="at">format =</span> <span class="st">"html"</span>,</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>        <span class="at">col.names =</span> <span class="fu">c</span>(<span class="st">"Variable"</span>, <span class="st">"Mínimo"</span>, <span class="st">"Media"</span>, <span class="st">"Mediana"</span>, <span class="st">"Máximo"</span>, <span class="st">"D.E."</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="at">bootstrap_options =</span> <span class="fu">c</span>(<span class="st">"striped"</span>, <span class="st">"hover"</span>, <span class="st">"condensed"</span>), </span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>                <span class="at">full_width =</span> F, </span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>                <span class="at">position =</span> <span class="st">"center"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">column_spec</span>(<span class="dv">1</span>, <span class="at">bold =</span> T)</span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>tabla_final_descriptivos</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <table class="table table-striped table-hover table-condensed caption-top table-sm small">
 <caption>Tabla 1. Estadísticos descriptivos de Sueldo y Edad</caption>
@@ -218,7 +214,7 @@ En las sociedades modernas, este principio actúa como un mecanismo simbólico q
 <td style="text-align: right;">18</td>
 <td style="text-align: right;">45</td>
 <td style="text-align: right;">45</td>
-<td style="text-align: right;">8.4e+01</td>
+<td style="text-align: right;">84</td>
 <td style="text-align: right;">13</td>
 </tr>
 <tr class="even">
@@ -226,66 +222,66 @@ En las sociedades modernas, este principio actúa como un mecanismo simbólico q
 <td style="text-align: right;">0</td>
 <td style="text-align: right;">579414</td>
 <td style="text-align: right;">415000</td>
-<td style="text-align: right;">2.0e+07</td>
+<td style="text-align: right;">20000000</td>
 <td style="text-align: right;">637065</td>
 </tr>
 </tbody>
 </table>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>tabla_final_descriptivos <span class="sc">%&gt;%</span> </span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">save_kable</span>(<span class="at">file =</span> <span class="st">"../output/tables/tabla_descriptivos.png"</span>, <span class="at">zoom =</span> <span class="dv">3</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>tabla_final_descriptivos <span class="sc">%&gt;%</span> </span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">save_kable</span>(<span class="at">file =</span> <span class="st">"../output/tables/tabla_descriptivos.png"</span>, <span class="at">zoom =</span> <span class="dv">3</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>La muestra analizada, por un lado presenta una edad promedio de 45 años, con una desviación estándar de 13 años. Es destacable que tanto la media como la mediana coinciden en los 45 años, lo que sugiere una distribución simétrica de la edad entre los encuestados, cuyo rango abarca desde los 18 hasta los 84 años.<br>
 <br>
 Ahora bien, el sueldo líquido exhibe una marcada asimetría y dispersión. Mientras que el ingreso promedio se sitúa en $579.414, la mediana desciende a $415.000, lo que indica que el 50% de la muestra percibe ingresos iguales o inferiores a esta última cifra. La alta variabilidad de los datos se refleja en una desviación estándar de $637.065 y un rango que se extiende desde los $0 hasta un máximo de $20.000.000. Esta brecha entre la media y la mediana es un indicador típico de desigualdad salarial, donde unos pocos ingresos muy elevados elevan el promedio por sobre la realidad de la mayoría de los casos.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. Tabla para Educación</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>tabla_educ <span class="ot">&lt;-</span> elsoc_proc <span class="sc">%&gt;%</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(Educacion) <span class="sc">%&gt;%</span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">freq_abs =</span> n,                              <span class="co"># Frecuencia Absoluta</span></span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">freq_acum =</span> <span class="fu">cumsum</span>(n),                     <span class="co"># Frecuencia Acumulada</span></span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">freq_rel =</span> (n <span class="sc">/</span> <span class="fu">sum</span>(n)) <span class="sc">*</span> <span class="dv">100</span>,             <span class="co"># Frecuencia Relativa (%)</span></span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">freq_rel_acum =</span> <span class="fu">cumsum</span>(freq_rel)           <span class="co"># Frecuencia Relativa Acumulada (%)</span></span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>n) <span class="co"># Quitamos la columna 'n' original porque ya la duplicamos</span></span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Formato Kable</span></span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>tabla_educ_final <span class="ot">&lt;-</span> tabla_educ <span class="sc">%&gt;%</span></span>
-<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>(<span class="at">caption =</span> <span class="st">"Tabla 2. Distribución de Nivel Educacional"</span>,</span>
-<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>        <span class="at">digits =</span> <span class="dv">1</span>,</span>
-<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>        <span class="at">format =</span> <span class="st">"html"</span>,</span>
-<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>        <span class="at">col.names =</span> <span class="fu">c</span>(<span class="st">"Categoría"</span>, <span class="st">"Frec. Absoluta"</span>, <span class="st">"Frec. Acumulada"</span>, <span class="st">"Frec. Relativa (%)"</span>, <span class="st">"Frec. Rel. Acum (%)"</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="at">bootstrap_options =</span> <span class="fu">c</span>(<span class="st">"striped"</span>, <span class="st">"hover"</span>), <span class="at">full_width =</span> F)</span>
-<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>tabla_educ_final <span class="sc">%&gt;%</span> </span>
-<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">save_kable</span>(<span class="at">file =</span> <span class="st">"../output/tables/tabla_educacion.png"</span>, <span class="at">zoom =</span> <span class="dv">3</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. Tabla para Educación</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>tabla_educ <span class="ot">&lt;-</span> elsoc_proc <span class="sc">%&gt;%</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(Educacion) <span class="sc">%&gt;%</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">freq_abs =</span> n,                              <span class="co"># Frecuencia Absoluta</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">freq_acum =</span> <span class="fu">cumsum</span>(n),                     <span class="co"># Frecuencia Acumulada</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">freq_rel =</span> (n <span class="sc">/</span> <span class="fu">sum</span>(n)) <span class="sc">*</span> <span class="dv">100</span>,             <span class="co"># Frecuencia Relativa (%)</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">freq_rel_acum =</span> <span class="fu">cumsum</span>(freq_rel)           <span class="co"># Frecuencia Relativa Acumulada (%)</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>n) <span class="co"># Quitamos la columna 'n' original porque ya la duplicamos</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Formato Kable</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>tabla_educ_final <span class="ot">&lt;-</span> tabla_educ <span class="sc">%&gt;%</span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>(<span class="at">caption =</span> <span class="st">"Tabla 2. Distribución de Nivel Educacional"</span>,</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>        <span class="at">digits =</span> <span class="dv">1</span>,</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>        <span class="at">format =</span> <span class="st">"html"</span>,</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>        <span class="at">col.names =</span> <span class="fu">c</span>(<span class="st">"Categoría"</span>, <span class="st">"Frec. Absoluta"</span>, <span class="st">"Frec. Acumulada"</span>, <span class="st">"Frec. Relativa (%)"</span>, <span class="st">"Frec. Rel. Acum (%)"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="at">bootstrap_options =</span> <span class="fu">c</span>(<span class="st">"striped"</span>, <span class="st">"hover"</span>), <span class="at">full_width =</span> F)</span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>tabla_educ_final <span class="sc">%&gt;%</span> </span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">save_kable</span>(<span class="at">file =</span> <span class="st">"../output/tables/tabla_educacion.png"</span>, <span class="at">zoom =</span> <span class="dv">3</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>En cuanto a la escolaridad de la muestra (N=11.563), se observa una distribución donde la categoría predominante es la Educación Media completa, alcanzando un 31,6% de los casos (n=3.657). Al analizar la frecuencia relativa acumulada, resulta crítico notar que el 59,2% de los encuestados posee, como máximo, la escolaridad obligatoria terminada, lo que sitúa a la mayoría de la muestra fuera del sistema de educación superior.<br>
 <br>
 Por otro lado, respecto a los estudios superiores, llama la atención que existe una paridad entre quienes han completado la Educación Técnica Superior (14,9%) y la Educación Universitaria (14,1%). Además, los niveles de especialización son minoritarios, con solo un 2.4% de los participantes declarando estudios de posgrado.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Tabla para Sexo</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>tabla_sexo <span class="ot">&lt;-</span> elsoc_proc <span class="sc">%&gt;%</span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(Sexo) <span class="sc">%&gt;%</span></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">freq_abs =</span> n,</span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">freq_acum =</span> <span class="fu">cumsum</span>(n),</span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">freq_rel =</span> (n <span class="sc">/</span> <span class="fu">sum</span>(n)) <span class="sc">*</span> <span class="dv">100</span>,</span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">freq_rel_acum =</span> <span class="fu">cumsum</span>(freq_rel)</span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>n)</span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Formato Kable</span></span>
-<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>tabla_sexo_final <span class="ot">&lt;-</span> tabla_sexo  <span class="sc">%&gt;%</span></span>
-<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>(<span class="at">caption =</span> <span class="st">"Tabla 3. Distribución por Sexo"</span>,</span>
-<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>        <span class="at">digits =</span> <span class="dv">1</span>,</span>
-<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>        <span class="at">format =</span> <span class="st">"html"</span>,</span>
-<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>        <span class="at">col.names =</span> <span class="fu">c</span>(<span class="st">"Categoría"</span>, <span class="st">"Frec. Absoluta"</span>, <span class="st">"Frec. Acumulada"</span>, <span class="st">"Frec. Relativa (%)"</span>, <span class="st">"Frec. Rel. Acum (%)"</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="at">bootstrap_options =</span> <span class="fu">c</span>(<span class="st">"striped"</span>, <span class="st">"hover"</span>), <span class="at">full_width =</span> F)</span>
-<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>tabla_sexo_final <span class="sc">%&gt;%</span> </span>
-<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">save_kable</span>(<span class="at">file =</span> <span class="st">"../output/tables/tabla_sexo.png"</span>, <span class="at">zoom =</span> <span class="dv">3</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Tabla para Sexo</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>tabla_sexo <span class="ot">&lt;-</span> elsoc_proc <span class="sc">%&gt;%</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(Sexo) <span class="sc">%&gt;%</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">freq_abs =</span> n,</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">freq_acum =</span> <span class="fu">cumsum</span>(n),</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">freq_rel =</span> (n <span class="sc">/</span> <span class="fu">sum</span>(n)) <span class="sc">*</span> <span class="dv">100</span>,</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">freq_rel_acum =</span> <span class="fu">cumsum</span>(freq_rel)</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>n)</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Formato Kable</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>tabla_sexo_final <span class="ot">&lt;-</span> tabla_sexo  <span class="sc">%&gt;%</span></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>(<span class="at">caption =</span> <span class="st">"Tabla 3. Distribución por Sexo"</span>,</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>        <span class="at">digits =</span> <span class="dv">1</span>,</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>        <span class="at">format =</span> <span class="st">"html"</span>,</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>        <span class="at">col.names =</span> <span class="fu">c</span>(<span class="st">"Categoría"</span>, <span class="st">"Frec. Absoluta"</span>, <span class="st">"Frec. Acumulada"</span>, <span class="st">"Frec. Relativa (%)"</span>, <span class="st">"Frec. Rel. Acum (%)"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="at">bootstrap_options =</span> <span class="fu">c</span>(<span class="st">"striped"</span>, <span class="st">"hover"</span>), <span class="at">full_width =</span> F)</span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>tabla_sexo_final <span class="sc">%&gt;%</span> </span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">save_kable</span>(<span class="at">file =</span> <span class="st">"../output/tables/tabla_sexo.png"</span>, <span class="at">zoom =</span> <span class="dv">3</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p><br>
 En términos de composición demográfica, la muestra acá presenta una distribución relativamente equilibrada, aunque con una mayoría femenina. Del total de participantes (N=11.563), el 52,5% se identifica como mujer (n=6.068), mientras que el 47,5% corresponde a hombres (n=5.495).</p>
@@ -293,53 +289,219 @@ En términos de composición demográfica, la muestra acá presenta una distribu
 <section id="paso-4-ilustrar-resultados-con-gráficos" class="level3">
 <h3 class="anchored" data-anchor-id="paso-4-ilustrar-resultados-con-gráficos">Paso 4: Ilustrar resultados con gráficos</h3>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>grafico_sueldo <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(elsoc_proc, <span class="fu">aes</span>(<span class="at">x =</span> Sueldo)) <span class="sc">+</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">fill =</span> <span class="st">"#4FA2C4"</span>, <span class="at">color =</span> <span class="st">"white"</span>, <span class="at">bins =</span> <span class="dv">50</span>) <span class="sc">+</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="fu">aes</span>(<span class="at">xintercept =</span> <span class="fu">median</span>(Sueldo)), <span class="at">color =</span> <span class="st">"#FFAD33"</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>, <span class="at">size =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Usamos una función personalizada dentro de labels</span></span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(</span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">20000000</span>, <span class="at">by =</span> <span class="dv">1000000</span>), <span class="co"># Cortes cada 1 millón</span></span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">labels =</span> <span class="cf">function</span>(x) {</span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>      <span class="fu">ifelse</span>(x <span class="sc">==</span> <span class="dv">0</span>, <span class="st">"$0"</span>, <span class="fu">paste0</span>(<span class="st">"$"</span>, x<span class="sc">/</span><span class="dv">1000000</span>, <span class="st">"M"</span>))</span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Distribución del Sueldo Líquido Mensual"</span>,</span>
-<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">"La línea amarilla indica la mediana. Eje X en millones de pesos (M)"</span>,</span>
-<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Sueldo"</span>, </span>
-<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Frecuencia"</span>,</span>
-<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>       <span class="at">caption =</span> <span class="st">"Fuente: Elab. Propia a partir de ELSOC 2016-2023"</span>) <span class="sc">+</span></span>
-<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span>
-<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="at">filename =</span> <span class="st">"../output/graphs/grafico_sueldo.png"</span>, </span>
-<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>       <span class="at">plot =</span> grafico_sueldo, </span>
-<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>       <span class="at">width =</span> <span class="dv">10</span>, </span>
-<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>       <span class="at">height =</span> <span class="dv">6</span>, </span>
-<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>       <span class="at">dpi =</span> <span class="dv">300</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>grafico_sueldo <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(elsoc_proc, <span class="fu">aes</span>(<span class="at">x =</span> Sueldo)) <span class="sc">+</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">fill =</span> <span class="st">"#294D8F"</span>, <span class="at">color =</span> <span class="st">"white"</span>, <span class="at">bins =</span> <span class="dv">50</span>) <span class="sc">+</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="fu">aes</span>(<span class="at">xintercept =</span> <span class="fu">median</span>(Sueldo)), <span class="at">color =</span> <span class="st">"#FFAD33"</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>, <span class="at">size =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Usamos una función personalizada dentro de labels</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">20000000</span>, <span class="at">by =</span> <span class="dv">1000000</span>), <span class="co"># Cortes cada 1 millón</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">labels =</span> <span class="cf">function</span>(x) {</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>      <span class="fu">ifelse</span>(x <span class="sc">==</span> <span class="dv">0</span>, <span class="st">"$0"</span>, <span class="fu">paste0</span>(<span class="st">"$"</span>, x<span class="sc">/</span><span class="dv">1000000</span>, <span class="st">"M"</span>))</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Distribución del Sueldo Líquido Mensual"</span>,</span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">"La línea amarilla indica la mediana. Eje X en millones de pesos (M)"</span>,</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Sueldo"</span>, </span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Frecuencia"</span>,</span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>       <span class="at">caption =</span> <span class="st">"Fuente: Elab. Propia a partir de ELSOC 2016-2023"</span>) <span class="sc">+</span></span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="at">filename =</span> <span class="st">"../output/graphs/grafico_sueldo.png"</span>, </span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>       <span class="at">plot =</span> grafico_sueldo, </span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>       <span class="at">width =</span> <span class="dv">10</span>, </span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>       <span class="at">height =</span> <span class="dv">6</span>, </span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>       <span class="at">dpi =</span> <span class="dv">300</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>La distribución del sueldo líquido mensual en la muestra de ELSOC, muestra una marcada asimetría. Con una mediana situada en los $415.000, el gráfico revela que la mitad de los encuestados percibe remuneraciones que no superan dicho umbral, agrupándose mayoritariamente entre los $0 y el $1.000.000. Esta altísima densidad en la base de la escala salarial hace que los ingresos más elevados, que llegan incluso hasta los $20.000.000, se vuelvan visualmente casi imperceptibles gráficamente.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Gráfico 2: Distribución de Nivel Educacional</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>grafico_educ <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(elsoc_proc, <span class="fu">aes</span>(<span class="at">x =</span> Educacion, <span class="at">fill =</span> Educacion)) <span class="sc">+</span></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>() <span class="sc">+</span></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span> <span class="co"># Giramos el gráfico para leer bien las etiquetas</span></span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Nivel Educacional de los Encuestados"</span>,</span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Nivel de Estudios"</span>, </span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Cantidad de Casos"</span>,</span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>       <span class="at">caption =</span> <span class="st">"Fuente: Elab. Propia a partir de ELSOC 2016-2023"</span>) <span class="sc">+</span></span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_viridis_d</span>(<span class="at">option =</span> <span class="st">"plasma"</span>, <span class="at">guide =</span> <span class="st">"none"</span>) <span class="sc">+</span> <span class="co"># Colores bonitos y sin leyenda innecesaria</span></span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="at">filename =</span> <span class="st">"../output/graphs/grafico_educ.png"</span>, </span>
-<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>       <span class="at">plot =</span> grafico_educ, </span>
-<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>       <span class="at">width =</span> <span class="dv">10</span>, </span>
-<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>       <span class="at">height =</span> <span class="dv">6</span>, </span>
-<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>       <span class="at">dpi =</span> <span class="dv">300</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Gráfico 2: Distribución de Nivel Educacional</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>grafico_educ <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(elsoc_proc, <span class="fu">aes</span>(<span class="at">x =</span> Educacion, <span class="at">fill =</span> Educacion)) <span class="sc">+</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>() <span class="sc">+</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span> <span class="co"># Giramos el gráfico para leer bien las etiquetas</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Nivel Educacional de los Encuestados"</span>,</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Nivel de Estudios"</span>, </span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Cantidad de Casos"</span>,</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>       <span class="at">caption =</span> <span class="st">"Fuente: Elab. Propia a partir de ELSOC 2016-2023"</span>) <span class="sc">+</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_viridis_d</span>(<span class="at">option =</span> <span class="st">"plasma"</span>, <span class="at">guide =</span> <span class="st">"none"</span>) <span class="sc">+</span> <span class="co"># Colores bonitos y sin leyenda innecesaria</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="at">filename =</span> <span class="st">"../output/graphs/grafico_educ.png"</span>, </span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>       <span class="at">plot =</span> grafico_educ, </span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>       <span class="at">width =</span> <span class="dv">10</span>, </span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>       <span class="at">height =</span> <span class="dv">6</span>, </span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>       <span class="at">dpi =</span> <span class="dv">300</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>El siguiente gráfico de barras revela que el nivel educacional predominante en la muestra es la Educación Media completa, la cual actúa como el principal eje de concentración con más de 3.500 casos, superando significativamente a cualquier otra categoría. Resulta sociológicamente relevante la paridad observada en los niveles de educación superior, donde los estudios Técnicos superiores y Universitarios completos presentan frecuencias casi idénticas, lo que sugiere una distribución equitativa entre ambos tipos de trayectorias profesionales en los encuestados. Por el otro lado, los extremos de la distribución (aquellos sin estudios o con formación de posgrado) representan las minorías más reducidas.</p>
+</section>
+</section>
+<section id="tarea-3." class="level2">
+<h2 class="anchored" data-anchor-id="tarea-3.">Tarea 3.</h2>
+<p>Como adelanté en la introducción, en esta tercera etapa del trabajo daremos un paso más allá en el análisis creando una escala de percepción de meritocracia.</p>
+<section id="paso-1-crear-una-nueva-base-con-las-nuevas-variables" class="level3">
+<h3 class="anchored" data-anchor-id="paso-1-crear-una-nueva-base-con-las-nuevas-variables">Paso 1: Crear una nueva base con las nuevas variables</h3>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>elsoc_trabajo3 <span class="ot">&lt;-</span> elsoc <span class="sc">%&gt;%</span> </span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(m13, m0_edad, m01, m0_sexo, c18_09, c18_10, c18_13) <span class="sc">%&gt;%</span> </span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_na</span>(<span class="at">na =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">666</span>, <span class="sc">-</span><span class="dv">888</span>, <span class="sc">-</span><span class="dv">999</span>, <span class="dv">999999999</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">Sueldo =</span> m13, </span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>         <span class="at">Edad =</span> m0_edad, </span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>         <span class="at">Educacion =</span> m01, </span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>         <span class="at">Sexo =</span> m0_sexo,</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>         <span class="at">Merito_Esfuerzo =</span> c18_09,</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>         <span class="at">Merito_Talento =</span> c18_10,</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>         <span class="at">Igualdad_Oport =</span> c18_13) <span class="sc">%&gt;%</span> </span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Es importantisimo asegurar que los ítems de la escala sean numéricos!!!</span></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Merito_Esfuerzo =</span> <span class="fu">as.numeric</span>(Merito_Esfuerzo),</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>         <span class="at">Merito_Talento =</span> <span class="fu">as.numeric</span>(Merito_Talento),</span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>         <span class="at">Igualdad_Oport =</span> <span class="fu">as.numeric</span>(Igualdad_Oport)) <span class="sc">%&gt;%</span> </span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Al final, limpiamos los NAs para que la escala y la correlación funcionen bien</span></span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">na.omit</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="paso-2-sacar-la-consistencia-interna-y-el-alfa-de-cronbach" class="level3">
+<h3 class="anchored" data-anchor-id="paso-2-sacar-la-consistencia-interna-y-el-alfa-de-cronbach">Paso 2: Sacar la consistencia interna y el Alfa de Cronbach</h3>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Aislamos solo los ítems que formarán la escala</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>items_merito <span class="ot">&lt;-</span> elsoc_trabajo3 <span class="sc">%&gt;%</span> </span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(Merito_Esfuerzo, Merito_Talento, Igualdad_Oport)</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(items_merito, <span class="at">use =</span> <span class="st">"complete.obs"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                Merito_Esfuerzo Merito_Talento Igualdad_Oport
+Merito_Esfuerzo       1.0000000      0.6811549      0.3828040
+Merito_Talento        0.6811549      1.0000000      0.3595664
+Igualdad_Oport        0.3828040      0.3595664      1.0000000</code></pre>
+</div>
+</div>
+<p>Esta matriz nos confirma que las tres preguntas de cierta forma, “conversan” bien entre sí. Por un lado, vemos que la creencia en el esfuerzo y el talento están fuertemente conectadas (0.68), lo que es súper lógico porque son el corazón de la idea de meritocracia. Por otro lado, la igualdad de oportunidades también se asocia de forma positiva con el esfuerzo (0.38) y el talento (0.35). <strong>Lo importante acá es que, salgan valores sobre 0.3.</strong></p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculamos el Alfa de Cronbach</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>alfa_resultado <span class="ot">&lt;-</span> psych<span class="sc">::</span><span class="fu">alpha</span>(items_merito)</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>alfa_resultado</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Reliability analysis   
+Call: psych::alpha(x = items_merito)
 
+  raw_alpha std.alpha G6(smc) average_r S/N   ase mean  sd median_r
+      0.73      0.73    0.68      0.47 2.7 0.006  2.5 0.8     0.38
+
+    95% confidence boundaries 
+         lower alpha upper
+Feldt     0.72  0.73  0.74
+Duhachek  0.72  0.73  0.74
+
+ Reliability if an item is dropped:
+                raw_alpha std.alpha G6(smc) average_r S/N alpha se var.r med.r
+Merito_Esfuerzo      0.53      0.53    0.36      0.36 1.1   0.0116    NA  0.36
+Merito_Talento       0.55      0.55    0.38      0.38 1.2   0.0110    NA  0.38
+Igualdad_Oport       0.81      0.81    0.68      0.68 4.3   0.0047    NA  0.68
+
+ Item statistics 
+                   n raw.r std.r r.cor r.drop mean   sd
+Merito_Esfuerzo 6559  0.85  0.85  0.78   0.64  2.5 0.98
+Merito_Talento  6559  0.84  0.84  0.76   0.62  2.7 0.99
+Igualdad_Oport  6559  0.73  0.72  0.46   0.40  2.3 1.03
+
+Non missing response frequency for each item
+                   1    2    3    4    5 miss
+Merito_Esfuerzo 0.10 0.49 0.20 0.19 0.02    0
+Merito_Talento  0.08 0.43 0.23 0.23 0.02    0
+Igualdad_Oport  0.20 0.53 0.09 0.15 0.03    0</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Si el Alfa es bueno (&gt; 0.7), construimos la escala con el promedio</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>elsoc_trabajo3 <span class="ot">&lt;-</span> elsoc_trabajo3 <span class="sc">%&gt;%</span> </span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">esc_meritocracia =</span> <span class="fu">rowMeans</span>(items_merito, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Para medir la percepción de meritocracia, agrupamos tres preguntas de la encuesta que consultan si en Chile se recompensa el esfuerzo, si se premia el talento, y si existe igualdad de oportunidades. Para comprobar si era válido juntarlas, calculamos su consistencia interna (Alfa de Cronbach), obteniendo un puntaje de <strong>0.73</strong>. Como en estadística se acepta cualquier valor sobre 0.70, este resultado nos confirma que las preguntas son súper consistentes entre sí.</p>
+</section>
+<section id="paso-3-crear-matriz-de-correlación" class="level3">
+<h3 class="anchored" data-anchor-id="paso-3-crear-matriz-de-correlación">Paso 3: Crear matriz de correlación</h3>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. Seleccionamos solo las variables continuas/numéricas para correlacionar</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>variables_correlacion <span class="ot">&lt;-</span> elsoc_trabajo3 <span class="sc">%&gt;%</span> </span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(Sueldo, Edad, esc_meritocracia)</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. Calculamos la matriz matemática (Pearson)</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>matriz_cor <span class="ot">&lt;-</span> <span class="fu">cor</span>(variables_correlacion, <span class="at">use =</span> <span class="st">"complete.obs"</span>)</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a><span class="co"># 3. Formateamos la tabla para el reporte formal (Exportada a la carpeta tables)</span></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>tabla_correlaciones <span class="ot">&lt;-</span> matriz_cor <span class="sc">%&gt;%</span> </span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>(<span class="at">caption =</span> <span class="st">"Tabla 4. Matriz de correlaciones de Pearson"</span>,</span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>        <span class="at">digits =</span> <span class="dv">2</span>,</span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>        <span class="at">format =</span> <span class="st">"html"</span>,</span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>        <span class="at">col.names =</span> <span class="fu">c</span>(<span class="st">"Sueldo Líquido"</span>, <span class="st">"Edad"</span>, <span class="st">"Escala Meritocracia"</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="at">bootstrap_options =</span> <span class="fu">c</span>(<span class="st">"striped"</span>, <span class="st">"hover"</span>, <span class="st">"condensed"</span>), <span class="at">full_width =</span> F)</span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Mostrar la tabla en el HTML</span></span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a>tabla_correlaciones</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<table class="table table-striped table-hover table-condensed caption-top table-sm small">
+<caption>Tabla 4. Matriz de correlaciones de Pearson</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th"></th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Sueldo Líquido</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Edad</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Escala Meritocracia</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Sueldo</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">-0.04</td>
+<td style="text-align: right;">0.05</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Edad</td>
+<td style="text-align: right;">-0.04</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">0.09</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">esc_meritocracia</td>
+<td style="text-align: right;">0.05</td>
+<td style="text-align: right;">0.09</td>
+<td style="text-align: right;">1.00</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Exportar tabla al formato IPO</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>tabla_correlaciones <span class="sc">%&gt;%</span> </span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">save_kable</span>(<span class="at">file =</span> <span class="st">"../output/tables/matriz_correlaciones.png"</span>, <span class="at">zoom =</span> <span class="dv">3</span>)</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="co"># 4. Gráfico de apoyo visual para las correlaciones (Exportado a graphs)</span></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>grafico_cor <span class="ot">&lt;-</span> <span class="fu">ggcorrplot</span>(matriz_cor, </span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>                          <span class="at">method =</span> <span class="st">"square"</span>, </span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>                          <span class="at">type =</span> <span class="st">"lower"</span>, </span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>                          <span class="at">lab =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>                          <span class="at">lab_size =</span> <span class="dv">4</span>,</span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>                          <span class="at">colors =</span> <span class="fu">c</span>(<span class="st">"#D7191C"</span>, <span class="st">"white"</span>, <span class="st">"#2C7BB6"</span>), </span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>                          <span class="at">title =</span> <span class="st">"Matriz de Asociación Lineal"</span>)</span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Mostrar el gráfico en el HTML</span></span>
+<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a>grafico_cor</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Procesamiento_files/figure-html/matriz-correlacion-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>En resumen, los datos muestran dos tendencias claras. Primero, al cruzar el Sueldo Líquido con la Escala de Meritocracia <strong>(r = 0.05)</strong>, vemos que a medida que las personas ganan más dinero, tienden a creer más en que el sistema realmente premia el esfuerzo y el talento. Segundo, al cruzar la Edad con la Meritocracia <strong>(r = 0.09)</strong>, se nota una diferencia generacional: las personas mayores confían más en que existe igualdad de oportunidades en Chile, mientras que los más jóvenes son más escépticos frente a esto. Si bien estos números (0.05 y 0.09) son bajos (lo cual es muy normal en sociología cuando se miden opiniones), sirven para confirmar que tu nivel de ingresos y tu edad sí influyen en cómo se percibe la meritocracia.</p>
+
+</section>
 </section>
 </section>
 

@@ -5,9 +5,43 @@ editor: visual
 bibliography: ../input/bib/references.bib
 ---
 
-# Cápsula: Tarea 2 - OPT
+# Cápsula: Trabajo OPT: R
 
-### Paso 1: Preparar el área de trabajo
+## Trabajo 1
+
+### Introducción
+
+Para efectos de esta tarea, se trabajará con la pregunta de investigación: ***"¿En qué medida el ingreso y el género influyen en la creencia de que el esfuerzo permite el éxito en Chile?"***. Esta interrogante se inserta en la discusión sobre la meritocracia, entendida como un sistema donde la distribución de bienes y beneficios se basa en el talento y el esfuerzo individual.\
+\
+En las sociedades modernas, este principio actúa como un mecanismo simbólico que legítima la desigualdad económica, desplazando los criterios de herencia por los de mérito personal. La literatura sugiere que la posición que ocupan los individuos en la estructura social afecta su visión del sistema; específicamente, como explica [@castillo2019] "(...) *aquellos de mayor estatus (asociado a ingreso y educación) percibirán y preferirán más la meritocracia como una forma de legitimar su posición en la sociedad*".
+
+Para este análisis, se utiliza la base de datos de la Encuesta Longitudinal Social de Chile (ELSOC), versión Long 2016-2023, buscando contrastar si estas percepciones subjetivas sobre el esfuerzo varían significativamente según las condiciones materiales y de género de los encuestados en el contexto nacional.
+
+Para revisar, las variables, recomiendo observar los cuestionarios de las encuestas. En este caso, las seleccionadas son las siguientes:
+
+-   m13: Sueldo líquido mensual - Variable intervalar.
+
+-   m0_edad: Edad - Variable intervalar.
+
+-   m0_sexo: Sexo - Variable nominal.
+
+-   m01: Nivel educacional - Variable ordinal.
+
+### Preparación de la escala
+
+Para efectos de la tarea 3, se procederá a agregar variables para la escala que midan meritocracia, las cuales operarán como variables dependientes.
+
+-   c18_09: En Chile las personas son recompensadas por sus esfuerzos.
+
+-   c18_10: En Chile las personas son recompensadas por su inteligencia y habilidades.
+
+-   c18_13: En Chile las personas tienen igualdad de oportunidades para salir adelante.
+
+## Trabajo 2:
+
+A continuación, se operacionalizan las variables seleccionadas, sacarle los descriptivos y sus respectivas visualizaciones mediante tablas y gráficos.
+
+### Paso 1: Cargar librerias.
 
 ```{r, echo=FALSE, warning=FALSE}
 
@@ -28,36 +62,22 @@ pacman::p_load(
   here,         # Gestión de rutas relativas
   webshot2,     # Motor para guardar tablas como imagen
   janitor,      # Limpieza de nombres y tablas
-  summarytools  # Resúmenes de datos
+  summarytools, # Resúmenes de datos
+  psych,        # Análisis de consistencia interna (Alfa de Cronbach)
+  ggcorrplot
 )
 rm(list = ls()) # Limpiar entorno de trabajo
+options(scipen = 999)
 ```
 
-### Paso 2: Cargar base de datos a utilizar
+### Paso 2: Cargar base de datos a utilizar y filtrarla
 
 ```{r, echo=FALSE, warning=FALSE}
 elsoc <- read_sav("../input/data/ELSOC_Long_2016_2023.sav")
+
 ```
 
-### Introducción
-
-Para efectos de esta tarea, se trabajará con la pregunta de investigación: ***"¿En qué medida el ingreso y el género influyen en la creencia de que el esfuerzo permite el éxito en Chile?"***. Esta interrogante se inserta en la discusión sobre la meritocracia, entendida como un sistema donde la distribución de bienes y beneficios se basa en el talento y el esfuerzo individual.\
-\
-En las sociedades modernas, este principio actúa como un mecanismo simbólico que legítima la desigualdad económica, desplazando los criterios de herencia por los de mérito personal. La literatura sugiere que la posición que ocupan los individuos en la estructura social afecta su visión del sistema; específicamente, como explica [@castillo2019] "(...) *aquellos de mayor estatus (asociado a ingreso y educación) percibirán y preferirán más la meritocracia como una forma de legitimar su posición en la sociedad*".
-
-Para este análisis, se utiliza la base de datos de la Encuesta Longitudinal Social de Chile (ELSOC), versión Long 2016-2023, buscando contrastar si estas percepciones subjetivas sobre el esfuerzo varían significativamente según las condiciones materiales y de género de los encuestados en el contexto nacional.
-
-Para revisar, las variables, recomiendo observar los cuestionarios de las encuestas. En este caso, las seleccionadas son las siguientes:
-
--   m13: Sueldo líquido mensual - Variable intervalar.
-
--   m0_edad: Edad - Variable intervalar.
-
--   m0_sexo: Sexo - Variable nominal.
-
--   m01: Nivel educacional - Variable ordinal.
-
-```{r Selección y preparación de las variables.}
+```{r echo=FALSE, warning=FALSE}
 
 elsoc_proc <- elsoc %>% 
   # 1. Seleccionamos las variables
@@ -179,7 +199,7 @@ En términos de composición demográfica, la muestra acá presenta una distribu
 
 ```{r, warning=FALSE, message=FALSE}
 grafico_sueldo <- ggplot(elsoc_proc, aes(x = Sueldo)) +
-  geom_histogram(fill = "#4FA2C4", color = "white", bins = 50) +
+  geom_histogram(fill = "#294D8F", color = "white", bins = 50) +
   geom_vline(aes(xintercept = median(Sueldo)), color = "#FFAD33", linetype = "dashed", size = 1) +
   
   # Usamos una función personalizada dentro de labels
@@ -227,3 +247,115 @@ ggsave(filename = "../output/graphs/grafico_educ.png",
 ```
 
 El siguiente gráfico de barras revela que el nivel educacional predominante en la muestra es la Educación Media completa, la cual actúa como el principal eje de concentración con más de 3.500 casos, superando significativamente a cualquier otra categoría. Resulta sociológicamente relevante la paridad observada en los niveles de educación superior, donde los estudios Técnicos superiores y Universitarios completos presentan frecuencias casi idénticas, lo que sugiere una distribución equitativa entre ambos tipos de trayectorias profesionales en los encuestados. Por el otro lado, los extremos de la distribución (aquellos sin estudios o con formación de posgrado) representan las minorías más reducidas.
+
+## Tarea 3.
+
+Como adelanté en la introducción, en esta tercera etapa del trabajo daremos un paso más allá en el análisis creando una escala de percepción de meritocracia.
+
+### Paso 1: Crear una nueva base con las nuevas variables
+
+```{r, warning=FALSE, message=FALSE}
+#| label: preparacion-escala
+
+elsoc_trabajo3 <- elsoc %>% 
+  select(m13, m0_edad, m01, m0_sexo, c18_09, c18_10, c18_13) %>% 
+  set_na(na = c(-666, -888, -999, 999999999)) %>%
+  
+  rename(Sueldo = m13, 
+         Edad = m0_edad, 
+         Educacion = m01, 
+         Sexo = m0_sexo,
+         Merito_Esfuerzo = c18_09,
+         Merito_Talento = c18_10,
+         Igualdad_Oport = c18_13) %>% 
+  
+  # Es importantisimo asegurar que los ítems de la escala sean numéricos!!!
+  mutate(Merito_Esfuerzo = as.numeric(Merito_Esfuerzo),
+         Merito_Talento = as.numeric(Merito_Talento),
+         Igualdad_Oport = as.numeric(Igualdad_Oport)) %>% 
+  
+  # Al final, limpiamos los NAs para que la escala y la correlación funcionen bien
+  na.omit()
+```
+
+### Paso 2: Sacar la consistencia interna y el Alfa de Cronbach
+
+```{r}
+# Aislamos solo los ítems que formarán la escala
+items_merito <- elsoc_trabajo3 %>% 
+  select(Merito_Esfuerzo, Merito_Talento, Igualdad_Oport)
+
+cor(items_merito, use = "complete.obs")
+```
+
+Esta matriz nos confirma que las tres preguntas de cierta forma, "conversan" bien entre sí. Por un lado, vemos que la creencia en el esfuerzo y el talento están fuertemente conectadas (0.68), lo que es súper lógico porque son el corazón de la idea de meritocracia. Por otro lado, la igualdad de oportunidades también se asocia de forma positiva con el esfuerzo (0.38) y el talento (0.35). **Lo importante acá es que, salgan valores sobre 0.3.**
+
+```{r, warning=FALSE, message=FALSE}
+#| label: cronbach-escala
+
+# Calculamos el Alfa de Cronbach
+alfa_resultado <- psych::alpha(items_merito)
+alfa_resultado
+
+```
+
+```{r}
+# Si el Alfa es bueno (> 0.7), construimos la escala con el promedio
+elsoc_trabajo3 <- elsoc_trabajo3 %>% 
+  mutate(esc_meritocracia = rowMeans(items_merito, na.rm = TRUE))
+```
+
+Para medir la percepción de meritocracia, agrupamos tres preguntas de la encuesta que consultan si en Chile se recompensa el esfuerzo, si se premia el talento, y si existe igualdad de oportunidades. Para comprobar si era válido juntarlas, calculamos su consistencia interna (Alfa de Cronbach), obteniendo un puntaje de **0.73**. Como en estadística se acepta cualquier valor sobre 0.70, este resultado nos confirma que las preguntas son súper consistentes entre sí.
+
+### Paso 3: Crear matriz de correlación
+
+```{r, warning=FALSE, message=FALSE}
+#| label: matriz-correlacion
+
+# 1. Seleccionamos solo las variables continuas/numéricas para correlacionar
+variables_correlacion <- elsoc_trabajo3 %>% 
+  select(Sueldo, Edad, esc_meritocracia)
+
+# 2. Calculamos la matriz matemática (Pearson)
+matriz_cor <- cor(variables_correlacion, use = "complete.obs")
+
+# 3. Formateamos la tabla para el reporte formal (Exportada a la carpeta tables)
+tabla_correlaciones <- matriz_cor %>% 
+  kable(caption = "Tabla 4. Matriz de correlaciones de Pearson",
+        digits = 2,
+        format = "html",
+        col.names = c("Sueldo Líquido", "Edad", "Escala Meritocracia")) %>% 
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"), full_width = F)
+
+# Mostrar la tabla en el HTML
+tabla_correlaciones
+
+# Exportar tabla al formato IPO
+tabla_correlaciones %>% 
+  save_kable(file = "../output/tables/matriz_correlaciones.png", zoom = 3)
+
+# 4. Gráfico de apoyo visual para las correlaciones (Exportado a graphs)
+grafico_cor <- ggcorrplot(matriz_cor, 
+                          method = "square", 
+                          type = "lower", 
+                          lab = TRUE,
+                          lab_size = 4,
+                          colors = c("#D7191C", "white", "#2C7BB6"), 
+                          title = "Matriz de Asociación Lineal")
+
+# Mostrar el gráfico en el HTML
+grafico_cor
+
+
+```
+
+```{r echo=FALSE}
+# Guardar el gráfico en la carpeta output
+ggsave(filename = "../output/graphs/grafico_matriz_cor.png", 
+       plot = grafico_cor, 
+       width = 8, 
+       height = 6, 
+       dpi = 300)
+```
+
+En resumen, los datos muestran dos tendencias claras. Primero, al cruzar el Sueldo Líquido con la Escala de Meritocracia **(r = 0.05)**, vemos que a medida que las personas ganan más dinero, tienden a creer más en que el sistema realmente premia el esfuerzo y el talento. Segundo, al cruzar la Edad con la Meritocracia **(r = 0.09)**, se nota una diferencia generacional: las personas mayores confían más en que existe igualdad de oportunidades en Chile, mientras que los más jóvenes son más escépticos frente a esto. Si bien estos números (0.05 y 0.09) son bajos (lo cual es muy normal en sociología cuando se miden opiniones), sirven para confirmar que tu nivel de ingresos y tu edad sí influyen en cómo se percibe la meritocracia.

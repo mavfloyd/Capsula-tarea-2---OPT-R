@@ -39,6 +39,76 @@
             "title-short": "Meritocracia y desigualdad económica",
             "type": "article-journal",
             "volume": "77"
+        },
+        {
+            "DOI": "10.29101/crcs.v31i0.22258",
+            "URL": "http://www.scielo.org.mx/scielo.php?script=sci_abstract&pid=S1405-14352024000100009&lng=es&nrm=iso&tlng=es",
+            "author": [
+                {
+                    "family": "Mac-Clure",
+                    "given": "Oscar"
+                },
+                {
+                    "family": "Barozet",
+                    "given": "Emmanuelle"
+                },
+                {
+                    "family": "Franetovic",
+                    "given": "Gonzalo"
+                },
+                {
+                    "family": "Mac-Clure",
+                    "given": "Oscar"
+                },
+                {
+                    "family": "Barozet",
+                    "given": "Emmanuelle"
+                },
+                {
+                    "family": "Franetovic",
+                    "given": "Gonzalo"
+                }
+            ],
+            "container-title": "Convergencia",
+            "id": "mac-clure2024",
+            "issued": {
+                "date-parts": [
+                    [
+                        2024
+                    ]
+                ]
+            },
+            "language": "es",
+            "title": "Justicia distributiva y posición social subjetiva: ¿la meritocracia justifica la desigualdad de ingresos?",
+            "title-short": "Justicia distributiva y posición social subjetiva",
+            "type": "article-journal",
+            "volume": "31"
+        },
+        {
+            "DOI": "10.7770/0719-2789.2019.cuhso.03.a06",
+            "URL": "http://www.scielo.cl/scielo.php?script=sci_abstract&pid=S0719-27892019000200259&lng=es&nrm=iso&tlng=es",
+            "author": [
+                {
+                    "family": "Gutiérrez Campos",
+                    "given": "Luis"
+                }
+            ],
+            "container-title": "Cultura-hombre-sociedad",
+            "id": "gutiérrezcampos2019",
+            "issue": "2",
+            "issued": {
+                "date-parts": [
+                    [
+                        2019,
+                        12
+                    ]
+                ]
+            },
+            "page": "259-280",
+            "title": "Neoliberalismo y modernización del estado en chile: Emergencia del gobierno electrónico y desigualdad social",
+            "title-short": "Neoliberalismo y modernización del estado en chile",
+            "type": "article-journal",
+            "volume": "29"
         }
     ],
     "project_biblios": []
